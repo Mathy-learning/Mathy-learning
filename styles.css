@@ -198,10 +198,10 @@ body
 .contacts
     {
     width: 1050px;
-    height: 125px;
+    height: 200px;
     background:#202424;
     color: #3a3d4c;
-    margin:500px 0px ;
+    margin: 0px auto;
     }
 
 .contacts h1
