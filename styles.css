@@ -177,7 +177,7 @@ body
     margin: 1px auto;
 }
 
-.main-levels button
+.mixed-tests button
 {
     border-radius: 100px;
     background: radial-gradient(rgb(64, 64, 64), rgb(27, 27, 27));
@@ -190,7 +190,7 @@ body
     transition: all .5s;
 }
 
-.main-levels button:hover
+.mixed-tests button:hover
 {
     box-shadow: #000000 0 5.50px 75.5px;
 }
