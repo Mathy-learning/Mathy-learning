@@ -3,210 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathy+-= | 5's</title>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="icon" href="/assets/favicon/favicon.png">
+    <title>Mathy+-= | 1's</title>
+    <link rel="stylesheet" href="/public/assets/css/main.css">
+    <link rel="icon" href="/public/assets/favicon/favicon.png">
 </head>
 <body>
-    
-    <div class="abt">
-        <h1>5's Excercises</h1>
-        <p>Try to answer as many of these multiplication questions correctly as possible in 1 minute!</p>
-        <a href="/math-types/multiplication">Want To Go Back?</a>
-        </div>
-    
-        <div id="score">Score: 0</div>
-        <div id="score-feedback"></div>
-        <div id="timer">Time Remaining: 60 Seconds</div>
-        
-        <div class="excercises">
-            <fieldset>
-                <legend>Start:</legend>
-                <label for="start-button">Begin Test Now:</label>
-                <button id="start-button">Begin Test Now</button>
-            </fieldset>
-    
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-1">Type Answer:</label>
-                <input type="text" id="5-1" name="5-1" placeholder="Locked">
-                <span id="feedback-5-1" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-2">Type Answer:</label>
-                <input type="text" id="5-2" name="5-2" placeholder="Locked">
-                <span id="feedback-5-2" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-3">Type Answer:</label>
-                <input type="text" id="5-3" name="5-3" placeholder="Locked">
-                <span id="feedback-5-3" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-4">Type Answer:</label>
-                <input type="text" id="5-4" name="5-4" placeholder="Locked">
-                <span id="feedback-5-4" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-5">Type Answer:</label>
-                <input type="text" id="5-5" name="5-5" placeholder="Locked">
-                <span id="feedback-5-5" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-6">Type Answer:</label>
-                <input type="text" id="5-6" name="5-6" placeholder="Locked">
-                <span id="feedback-5-6" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-7">Type Answer:</label>
-                <input type="text" id="5-7" name="5-7" placeholder="Locked">
-                <span id="feedback-5-7" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-8">Type Answer:</label>
-                <input type="text" id="5-8" name="5-8" placeholder="Locked">
-                <span id="feedback-5-8" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-9">Type Answer:</label>
-                <input type="text" id="5-9" name="5-9" placeholder="Locked">
-                <span id="feedback-5-9" class="feedback"></span>
-            </fieldset>
-            <fieldset>
-                <legend>Answer:</legend>
-                <label for="5-10">Type Answer:</label>
-                <input type="text" id="5-10" name="5-10" placeholder="Locked">
-                <span id="feedback-5-10" class="feedback"></span>
-            </fieldset>
-        </div>
-    
-        <script>
-            // Timer setup
-            let timeRemaining = 60; // Countdown time
-            const timerElement = document.getElementById('timer');
-            const scoreElement = document.getElementById('score');
-            const scoreFeedbackElement = document.getElementById('score-feedback');
-            const inputFields = document.querySelectorAll('input[type="text"]');
-            const startButton = document.getElementById('start-button');
-            let countdown;
-            let score = 0; // Score
-    
-            // Answers for questions
-            const correctAnswers = {
-                "5-1": "5",
-                "5-2": "10",
-                "5-3": "15",
-                "5-4": "20",
-                "5-5": "25",
-                "5-6": "30",
-                "5-7": "35",
-                "5-8": "40",
-                "5-9": "45",
-                "5-10": "50"
-            };
-    
-            // Equations for when the countdown starts
-            const equations = {
-                "5-1": "5 * 1",
-                "5-2": "5 * 2",
-                "5-3": "5 * 3",
-                "5-4": "5 * 4",
-                "5-5": "5 * 5",
-                "5-6": "5 * 6",
-                "5-7": "5 * 7",
-                "5-8": "5 * 8",
-                "5-9": "5 * 9",
-                "5-10": "5 * 10"
-            };
-    
-            // Disable all input fields when the countdown is not in action
-            function disableInputs(disabled) {
-                inputFields.forEach(input => {
-                    if (disabled) {
-                        input.disabled = true;
-                        input.placeholder = "Locked";
-                    } else {
-                        input.disabled = false;
-                        input.placeholder = equations[input.id];  // Show the equation when enabled
-                    }
-                });
-            }
-    
-            // Store the equations
-            inputFields.forEach(input => {
-                input.setAttribute("data-original-placeholder", equations[input.id]);
-            });
-    
-            // Disable all input fields initially and set placeholders to "Locked"
-            disableInputs(true);
-    
-            // Event listener for the Start button
-            startButton.addEventListener('click', () => {
-                startButton.disabled = true;
-                disableInputs(false); // Enable the input fields and show equations when the countdown is in action
-                startCountdown();
-            });
-    
-            // Countdown
-            function startCountdown() {
-                countdown = setInterval(() => {
-                    timeRemaining--;
-                    timerElement.textContent = `Time Remaining: ${timeRemaining}`;
-    
-                    if (timeRemaining <= 0) {
-                        clearInterval(countdown);
-                        disableInputs(true); // Disable input fields when time runs out
-                        timerElement.textContent = 'Time is up!';
-                        checkAnswers(); // Check answers once the countdown is over
-                    }
-                }, 1000);
-            }
-    
-            // Function to check all answers after time runs out
-            function checkAnswers() {
-                inputFields.forEach(input => {
-                    const inputId = input.id;
-                    const value = input.value;
-                    const feedbackElement = document.getElementById(`feedback-${inputId}`);
-                    
-                    if (value === correctAnswers[inputId]) {
-                        feedbackElement.textContent = "Correct";
-                        feedbackElement.style.color = "green";
-                        score += 10.00;
-                    } else {
-                        feedbackElement.textContent = "Incorrect";
-                        feedbackElement.style.color = "red";
-                    }
-                });
-                
-                // Update the score
-                scoreElement.textContent = `Score: ${score.toFixed(2)}`;  // Show score
-                
-                // Provide feedback based on the score range
-                if (score <= 25) {
-                    scoreFeedbackElement.textContent = "Lots Of Practice Needed";
-                    scoreFeedbackElement.style.color = "red";
-                } else if (score <= 50) {
-                    scoreFeedbackElement.textContent = "Practice Needed";
-                    scoreFeedbackElement.style.color = "orange";
-                } else if (score <= 75) {
-                    scoreFeedbackElement.textContent = "A Little Practice Needed";
-                    scoreFeedbackElement.style.color = "blue";
-    
-                } else
-                    scoreFeedbackElement.textContent = "Your 5's for Multiplication Are Mastered!";
-                    scoreFeedbackElement.style.color = "green";
-                }
-    
-        </script>
+    <div id="content"></div>
 
+    <script>
+        // Define the BerZek format
+        const berzekCode = {
+            "main": {
+                "structure": [
+                    { "title": "Mathy+-= | 1's" }
+                ]
+            },
+            "body": [
+                {
+                    "type": "div",
+                    "class": "abt",
+                    "children": [
+                        { "type": "h1", "text": "4's Exercises" },
+                        { "type": "p", "text": "Try to answer as many of these multiplication questions correctly as possible in 1 minute!" },
+                        { "type": "a", "href": "/math-types/multiplication", "text": "Want To Go Back?" }
+                    ]
+                },
+                { "type": "div", "id": "score", "text": "Score: 0" },
+                { "type": "div", "id": "score-feedback", "text": "" },
+                { "type": "div", "id": "timer", "text": "Time Remaining: 60 Seconds" },
+                {
+                    "type": "div",
+                    "class": "exercises",
+                    "children": [
+                        {
+                            "type": "fieldset",
+                            "children": [
+                                { "type": "legend", "text": "Start:" },
+                                { "type": "label", "for": "start-button", "text": "Begin Test Now: " },
+                                { "type": "button", "id": "start-button", "text": "Begin Test Now" }
+                            ]
+                        },
+                        ...Array.from({ length: 10 }, (_, i) => ({
+                            "type": "fieldset",
+                            "children": [
+                                { "type": "legend", "text": "Answer:" },
+                                { "type": "label", "for": `4-${i + 1}`, "text": "Type Answer: " },
+                                { "type": "input", "inputType": "text", "id": `4-${i + 1}`, "name": `4-${i + 1}`, "placeholder": "Locked" },
+                                { "type": "span", "id": `feedback-4-${i + 1}`, "class": "feedback" }
+                            ]
+                        }))
+                    ]
+                }
+            ]
+        };
+
+        // Function to parse and render BerZek code
+        function parseBerZek(code) {
+            document.title = code.main.structure[0].title;
+            const contentDiv = document.getElementById("content");
+
+            function createElement(elementData) {
+                let element = document.createElement(elementData.type);
+
+                // Set element attributes
+                if (elementData.class) element.classList.add(elementData.class);
+                if (elementData.id) element.id = elementData.id;
+                if (elementData.text) element.textContent = elementData.text;
+                if (elementData.href) element.href = elementData.href;
+                if (elementData.placeholder) element.placeholder = elementData.placeholder;
+                if (elementData.inputType) element.type = elementData.inputType;
+                if (elementData.for) element.setAttribute("for", elementData.for);
+
+                if (elementData.children) {
+                    elementData.children.forEach(childData => {
+                        const childElement = createElement(childData);
+                        element.appendChild(childElement);
+                    });
+                }
+                return element;
+            }
+
+            // Parse body content and append to DOM
+            code.body.forEach(elementData => {
+                const newElement = createElement(elementData);
+                contentDiv.appendChild(newElement);
+            });
+        }
+
+        // Parse and render the BerZek code
+        parseBerZek(berzekCode);
+
+        // JavaScript for the timer and scoring logic
+        let timeRemaining = 60;
+        let score = 0;
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('score');
+        const scoreFeedbackElement = document.getElementById('score-feedback');
+        const inputFields = document.querySelectorAll('input[type="text"]');
+        const startButton = document.getElementById('start-button');
+        let countdown;
+
+        const correctAnswers = {
+            "5-1": "5", "5-2": "8", "4-3": "12", "4-4": "16", "4-5": "20",
+            "4-6": "24", "4-7": "28", "4-8": "32", "4-9": "36", "4-10": "30"
+        };
+
+        const equations = {
+            "4-1": "4 * 1", "4-2": "4 * 2", "4-3": "4 * 3", "4-4": "4 * 4", "4-5": "4 * 5",
+            "4-6": "4 * 6", "4-7": "4 * 7", "4-8": "4 * 8", "4-9": "4 * 9", "4-10": "4 * 10"
+        };
+
+        function disableInputs(disabled) {
+            inputFields.forEach(input => {
+                input.disabled = disabled;
+                input.placeholder = disabled ? "Locked" : equations[input.id];
+            });
+        }
+
+        disableInputs(true);
+
+        startButton.addEventListener('click', () => {
+            startButton.disabled = true;
+            disableInputs(false);
+            startCountdown();
+        });
+
+        function startCountdown() {
+            countdown = setInterval(() => {
+                timeRemaining--;
+                timerElement.textContent = `Time Remaining: ${timeRemaining} Seconds`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdown);
+                    disableInputs(true);
+                    timerElement.textContent = 'Time is up!';
+                    checkAnswers();
+                }
+            }, 1000);
+        }
+
+        function checkAnswers() {
+            inputFields.forEach(input => {
+                const inputId = input.id;
+                const value = input.value;
+                const feedbackElement = document.getElementById(`feedback-${inputId}`);
+
+                if (value === correctAnswers[inputId]) {
+                    feedbackElement.textContent = "Correct";
+                    feedbackElement.style.color = "green";
+                    score += 10;
+                } else {
+                    feedbackElement.textContent = "Incorrect";
+                    feedbackElement.style.color = "red";
+                }
+            });
+
+            scoreElement.textContent = `Score: ${score}`;
+            if (score <= 25) {
+                scoreFeedbackElement.textContent = "Lots Of Practice Needed";
+                scoreFeedbackElement.style.color = "red";
+            } else if (score <= 50) {
+                scoreFeedbackElement.textContent = "Practice Needed";
+                scoreFeedbackElement.style.color = "orange";
+            } else if (score <= 75) {
+                scoreFeedbackElement.textContent = "A Little Practice Needed";
+                scoreFeedbackElement.style.color = "blue";
+            } else {
+                scoreFeedbackElement.textContent = "Your 4's for Multiplication Are Mastered!";
+                scoreFeedbackElement.style.color = "green";
+            }
+        }
+    </script>
 </body>
 </html>
