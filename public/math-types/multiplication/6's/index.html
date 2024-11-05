@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathy+-= | 6's</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+    
+    <div class="abt">
+        <h1>6's Excercises</h1>
+    <p>Try to answer as many of these multiplication questions correctly as possible in 1 minute!</p>
+    <a href="/math-types/multiplication">Want To Go Back?</a>
+    </div>
+
+    <div id="score">Score: 0</div>
+    <div id="score-feedback"></div>
+    <div id="timer">Time Remaining: 60 Seconds</div>
+    
+    <div class="excercises">
+        <fieldset>
+            <legend>Start:</legend>
+            <label for="start-button">Begin Test Now:</label>
+            <button id="start-button">Begin Test Now</button>
+        </fieldset>
+
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-1">Type Answer:</label>
+            <input type="text" id="6-1" name="6-1" placeholder="Locked">
+            <span id="feedback-6-1" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-2">Type Answer:</label>
+            <input type="text" id="6-2" name="4-2" placeholder="Locked">
+            <span id="feedback-4-2" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-3">Type Answer:</label>
+            <input type="text" id="6-3" name="6-3" placeholder="Locked">
+            <span id="feedback-6-3" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-4">Type Answer:</label>
+            <input type="text" id="6-4" name="6-4" placeholder="Locked">
+            <span id="feedback-6-4" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-5">Type Answer:</label>
+            <input type="text" id="6-5" name="6-5" placeholder="Locked">
+            <span id="feedback-6-5" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-6">Type Answer:</label>
+            <input type="text" id="6-6" name="6-6" placeholder="Locked">
+            <span id="feedback-6-6" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-7">Type Answer:</label>
+            <input type="text" id="6-7" name="6-7" placeholder="Locked">
+            <span id="feedback-6-7" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-8">Type Answer:</label>
+            <input type="text" id="6-8" name="6-8" placeholder="Locked">
+            <span id="feedback-6-8" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-9">Type Answer:</label>
+            <input type="text" id="6-9" name="6-9" placeholder="Locked">
+            <span id="feedback-6-9" class="feedback"></span>
+        </fieldset>
+        <fieldset>
+            <legend>Answer:</legend>
+            <label for="6-10">Type Answer:</label>
+            <input type="text" id="6-10" name="6-10" placeholder="Locked">
+            <span id="feedback-6-10" class="feedback"></span>
+        </fieldset>
+    </div>
+
+    <script>
+        // Timer setup
+        let timeRemaining = 60; // Countdown time
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('score');
+        const scoreFeedbackElement = document.getElementById('score-feedback');
+        const inputFields = document.querySelectorAll('input[type="text"]');
+        const startButton = document.getElementById('start-button');
+        let countdown;
+        let score = 0; // Score
+
+        // Answers for questions
+        const correctAnswers = {
+            "6-1": "6",
+            "6-2": "12",
+            "6-3": "18",
+            "6-4": "24",
+            "6-5": "30",
+            "6-6": "36",
+            "6-7": "42",
+            "6-8": "48",
+            "6-9": "54",
+            "6-10": "60"
+        };
+
+        // Equations for when the countdown starts
+        const equations = {
+            "6-1": "6 * 1",
+            "6-2": "6 * 2",
+            "6-3": "6 * 3",
+            "6-4": "6 * 4",
+            "6-5": "6 * 5",
+            "6-6": "6 * 6",
+            "6-7": "6 * 7",
+            "6-8": "6 * 8",
+            "6-9": "6 * 9",
+            "6-10": "6 * 10"
+        };
+
+        // Disable all input fields when the countdown is not in action
+        function disableInputs(disabled) {
+            inputFields.forEach(input => {
+                if (disabled) {
+                    input.disabled = true;
+                    input.placeholder = "Locked";
+                } else {
+                    input.disabled = false;
+                    input.placeholder = equations[input.id];  // Show the equation when enabled
+                }
+            });
+        }
+
+        // Store the equations
+        inputFields.forEach(input => {
+            input.setAttribute("data-original-placeholder", equations[input.id]);
+        });
+
+        // Disable all input fields initially and set placeholders to "Locked"
+        disableInputs(true);
+
+        // Event listener for the Start button
+        startButton.addEventListener('click', () => {
+            startButton.disabled = true;
+            disableInputs(false); // Enable the input fields and show equations when the countdown is in action
+            startCountdown();
+        });
+
+        // Countdown
+        function startCountdown() {
+            countdown = setInterval(() => {
+                timeRemaining--;
+                timerElement.textContent = `Time Remaining: ${timeRemaining}`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdown);
+                    disableInputs(true); // Disable input fields when time runs out
+                    timerElement.textContent = 'Time is up!';
+                    checkAnswers(); // Check answers once the countdown is over
+                }
+            }, 1000);
+        }
+
+        // Function to check all answers after time runs out
+        function checkAnswers() {
+            inputFields.forEach(input => {
+                const inputId = input.id;
+                const value = input.value;
+                const feedbackElement = document.getElementById(`feedback-${inputId}`);
+                
+                if (value === correctAnswers[inputId]) {
+                    feedbackElement.textContent = "Correct";
+                    feedbackElement.style.color = "green";
+                    score += 10.00;
+                } else {
+                    feedbackElement.textContent = "Incorrect";
+                    feedbackElement.style.color = "red";
+                }
+            });
+            
+            // Update the score
+            scoreElement.textContent = `Score: ${score.toFixed(2)}`;  // Show score
+            
+            // Provide feedback based on the score range
+            if (score <= 25) {
+                scoreFeedbackElement.textContent = "Lots Of Practice Needed";
+                scoreFeedbackElement.style.color = "red";
+            } else if (score <= 50) {
+                scoreFeedbackElement.textContent = "Practice Needed";
+                scoreFeedbackElement.style.color = "orange";
+            } else if (score <= 75) {
+                scoreFeedbackElement.textContent = "A Little Practice Needed";
+                scoreFeedbackElement.style.color = "blue";
+
+            } else
+                scoreFeedbackElement.textContent = "Your 6's for Multiplication Are Mastered!";
+                scoreFeedbackElement.style.color = "green";
+            }
+
+    </script>
+
+</body>
+</html>

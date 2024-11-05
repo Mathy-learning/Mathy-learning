@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathy+-= | 1's</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+    <div id="content"></div>
+
+    <script>
+        // Define the BerZek format
+        const berzekCode = {
+            "main": {
+                "structure": [
+                    { "title": "Mathy+-= | 2's" }
+                ]
+            },
+            "body": [
+                {
+                    "type": "div",
+                    "class": "abt",
+                    "children": [
+                        { "type": "h1", "text": "2's Exercises" },
+                        { "type": "p", "text": "Try to answer as many of these multiplication questions correctly as possible in 1 minute!" },
+                        { "type": "a", "href": "../", "text": "Want To Go Back?" }
+                    ]
+                },
+                { "type": "div", "id": "score", "text": "Score: 0" },
+                { "type": "div", "id": "score-feedback", "text": "" },
+                { "type": "div", "id": "timer", "text": "Time Remaining: 60 Seconds" },
+                {
+                    "type": "div",
+                    "class": "exercises",
+                    "children": [
+                        {
+                            "type": "fieldset",
+                            "children": [
+                                { "type": "legend", "text": "Start:" },
+                                { "type": "label", "for": "start-button", "text": "Begin Test Now: " },
+                                { "type": "button", "id": "start-button", "text": "Begin Test Now" }
+                            ]
+                        },
+                        ...Array.from({ length: 10 }, (_, i) => ({
+                            "type": "fieldset",
+                            "children": [
+                                { "type": "legend", "text": "Answer:" },
+                                { "type": "label", "for": `2-${i + 1}`, "text": "Type Answer: " },
+                                { "type": "input", "inputType": "text", "id": `2-${i + 1}`, "name": `2-${i + 1}`, "placeholder": "Locked" },
+                                { "type": "span", "id": `feedback-2-${i + 1}`, "class": "feedback" }
+                            ]
+                        }))
+                    ]
+                }
+            ]
+        };
+
+        // Function to parse and render BerZek code
+        function parseBerZek(code) {
+            document.title = code.main.structure[0].title;
+            const contentDiv = document.getElementById("content");
+
+            function createElement(elementData) {
+                let element = document.createElement(elementData.type);
+
+                // Set element attributes
+                if (elementData.class) element.classList.add(elementData.class);
+                if (elementData.id) element.id = elementData.id;
+                if (elementData.text) element.textContent = elementData.text;
+                if (elementData.href) element.href = elementData.href;
+                if (elementData.placeholder) element.placeholder = elementData.placeholder;
+                if (elementData.inputType) element.type = elementData.inputType;
+                if (elementData.for) element.setAttribute("for", elementData.for);
+
+                if (elementData.children) {
+                    elementData.children.forEach(childData => {
+                        const childElement = createElement(childData);
+                        element.appendChild(childElement);
+                    });
+                }
+                return element;
+            }
+
+            // Parse body content and append to DOM
+            code.body.forEach(elementData => {
+                const newElement = createElement(elementData);
+                contentDiv.appendChild(newElement);
+            });
+        }
+
+        // Parse and render the BerZek code
+        parseBerZek(berzekCode);
+
+        // JavaScript for the timer and scoring logic
+        let timeRemaining = 30;
+        let score = 0;
+        const timerElement = document.getElementById('timer');
+        const scoreElement = document.getElementById('score');
+        const scoreFeedbackElement = document.getElementById('score-feedback');
+        const inputFields = document.querySelectorAll('input[type="text"]');
+        const startButton = document.getElementById('start-button');
+        let countdown;
+
+        const correctAnswers = {
+            "2-1": "2", "2-2": "4", "2-3": "6", "2-4": "8", "2-5": "10",
+            "2-6": "12", "2-7": "14", "2-8": "16", "2-9": "18", "2-10": "20"
+        };
+
+        const equations = {
+            "2-1": "2 * 1", "2-2": "2 * 2", "2-3": "2 * 3", "2-4": "2 * 4", "2-5": "2 * 5",
+            "2-6": "2 * 6", "2-7": "2 * 7", "2-8": "2 * 8", "2-9": "2 * 9", "2-10": "2 * 10"
+        };
+
+        function disableInputs(disabled) {
+            inputFields.forEach(input => {
+                input.disabled = disabled;
+                input.placeholder = disabled ? "Locked" : equations[input.id];
+            });
+        }
+
+        disableInputs(true);
+
+        startButton.addEventListener('click', () => {
+            startButton.disabled = true;
+            disableInputs(false);
+            startCountdown();
+        });
+
+        function startCountdown() {
+            countdown = setInterval(() => {
+                timeRemaining--;
+                timerElement.textContent = `Time Remaining: ${timeRemaining} Seconds`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdown);
+                    disableInputs(true);
+                    timerElement.textContent = 'Time is up!';
+                    checkAnswers();
+                }
+            }, 1000);
+        }
+
+        function checkAnswers() {
+            inputFields.forEach(input => {
+                const inputId = input.id;
+                const value = input.value;
+                const feedbackElement = document.getElementById(`feedback-${inputId}`);
+
+                if (value === correctAnswers[inputId]) {
+                    feedbackElement.textContent = "Correct";
+                    feedbackElement.style.color = "green";
+                    score += 10;
+                } else {
+                    feedbackElement.textContent = "Incorrect";
+                    feedbackElement.style.color = "red";
+                }
+            });
+
+            scoreElement.textContent = `Score: ${score}`;
+            if (score <= 25) {
+                scoreFeedbackElement.textContent = "Lots Of Practice Needed";
+                scoreFeedbackElement.style.color = "red";
+            } else if (score <= 50) {
+                scoreFeedbackElement.textContent = "Practice Needed";
+                scoreFeedbackElement.style.color = "orange";
+            } else if (score <= 75) {
+                scoreFeedbackElement.textContent = "A Little Practice Needed";
+                scoreFeedbackElement.style.color = "blue";
+            } else {
+                scoreFeedbackElement.textContent = "Your 2's for Multiplication Are Mastered!";
+                scoreFeedbackElement.style.color = "green";
+            }
+        }
+    </script>
+</body>
+</html>

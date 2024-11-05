@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #151717;
+            color: #ffffff;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #202424;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 2.5em;
+        }
+        .controls {
+            margin: 20px;
+        }
+        select, button, input {
+            padding: 10px;
+            font-size: 1.2em;
+            margin: 10px;
+            color: #ffffff;
+            background-image: linear-gradient(to right, #000000, #4a4a4a);
+        }
+        .equation {
+            font-size: 2em;
+            margin: 20px;
+            color: #ffffff;
+        }
+        .feedback {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        .correct {
+            color: #008000;
+        }
+        .incorrect {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+
+<div id="content" class="container"></div>
+
+<script>
+    // Define the BerZek format
+    const berzekCode = {
+        "main": {
+            "structure": [
+                { "title": "Mathy+-= | Equations" },
+            ]
+        },
+        "body": [
+            {
+                "type": "Heading",
+                "text": "Custom Math Practice",
+                "tag": "h1"
+            },
+            {
+                "type": "Controls",
+                "elements": [
+                    { "Label": "Min Number:", "Input": { "type": "number", "id": "min-number", "value": "1" } },
+                    { "Label": "Max Number:", "Input": { "type": "number", "id": "max-number", "value": "10" } }
+                ]
+            },
+            {
+                "type": "Controls",
+                "elements": [
+                    { "Paragraph": "Select Operations:" },
+                    { "Checkbox": { "id": "addition", "label": "Addition", "checked": true } },
+                    { "Checkbox": { "id": "subtraction", "label": "Subtraction" } },
+                    { "Checkbox": { "id": "multiplication", "label": "Multiplication" } },
+                    { "Checkbox": { "id": "division", "label": "Division" } }
+                ]
+            },
+            {
+                "type": "Button",
+                "text": "Generate Problem",
+                "onclick": "generateProblem()"
+            },
+            {
+                "type": "EquationOutput",
+                "id": "equation-output",
+                "class": "equation",
+                "content": ""
+            },
+            {
+                "type": "AnswerInput",
+                "placeholder": "Your answer",
+                "id": "user-answer",
+                "inputType": "number"
+            },
+            {
+                "type": "Button",
+                "text": "Submit Answer",
+                "onclick": "checkAnswer()"
+            },
+            {
+                "type": "Feedback",
+                "id": "feedback",
+                "class": "feedback",
+                "content": ""
+            }
+        ]
+    };
+
+    // Function to parse and render BerZek code
+    function parseBerZek(code) {
+        document.title = code.main.structure[0].title;
+
+        const contentDiv = document.getElementById("content");
+
+        // Iterate over each element in the body
+        code.body.forEach(element => {
+            let newElement;
+
+            switch (element.type) {
+                case "Heading":
+                    newElement = document.createElement(element.tag || "h1");
+                    newElement.textContent = element.text;
+                    break;
+                case "Controls":
+                    newElement = document.createElement("div");
+                    newElement.classList.add("controls");
+                    element.elements.forEach(subElement => {
+                        if (subElement.Label) {
+                            const label = document.createElement("label");
+                            label.textContent = subElement.Label;
+                            newElement.appendChild(label);
+                        }
+                        if (subElement.Input) {
+                            const input = document.createElement("input");
+                            input.type = subElement.Input.type;
+                            input.id = subElement.Input.id;
+                            input.value = subElement.Input.value;
+                            newElement.appendChild(input);
+                        }
+                        if (subElement.Paragraph) {
+                            const p = document.createElement("p");
+                            p.textContent = subElement.Paragraph;
+                            newElement.appendChild(p);
+                        }
+                        if (subElement.Checkbox) {
+                            const checkbox = document.createElement("input");
+                            checkbox.type = "checkbox";
+                            checkbox.id = subElement.Checkbox.id;
+                            checkbox.checked = subElement.Checkbox.checked || false;
+                            const label = document.createElement("label");
+                            label.textContent = subElement.Checkbox.label;
+                            label.htmlFor = subElement.Checkbox.id;
+                            newElement.appendChild(checkbox);
+                            newElement.appendChild(label);
+                            newElement.appendChild(document.createElement("br"));
+                        }
+                    });
+                    break;
+                case "Button":
+                    newElement = document.createElement("button");
+                    newElement.textContent = element.text;
+                    if (element.onclick) {
+                        newElement.setAttribute("onclick", element.onclick);
+                    }
+                    break;
+                case "EquationOutput":
+                    newElement = document.createElement("div");
+                    newElement.classList.add(element.class);
+                    newElement.id = element.id;
+                    newElement.textContent = element.content;
+                    break;
+                case "AnswerInput":
+                    newElement = document.createElement("input");
+                    newElement.type = element.inputType;
+                    newElement.placeholder = element.placeholder;
+                    newElement.id = element.id;
+                    newElement.addEventListener("keydown", function(event) {
+                        if (event.key === "Enter") {
+                            checkAnswer();
+                        }
+                    });
+                    break;
+                case "Feedback":
+                    newElement = document.createElement("div");
+                    newElement.classList.add(element.class);
+                    newElement.id = element.id;
+                    newElement.textContent = element.content;
+                    break;
+                default:
+                    break;
+            }
+
+            if (newElement) {
+                contentDiv.appendChild(newElement);
+            }
+        });
+    }
+
+    // Parse and render the BerZek code
+    parseBerZek(berzekCode);
+
+</script>
+
+<script src="../assets/js/equation-generator.js"></script>
+
+</body>
+</html>
