@@ -1,7 +1,6 @@
 {
     "hosting": {
       "site": "mathy-learning",
-  
       "public": "public"
     }
   }
