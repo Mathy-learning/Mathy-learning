@@ -11,7 +11,7 @@
     <div id="content"></div>
 
     <script>
-        // Define the BerZek format
+        // BerZek Code
         const berzekCode = {
             "main": {
                 "structure": [
@@ -57,7 +57,6 @@
             ]
         };
 
-        // Function to parse and render BerZek code
         function parseBerZek(code) {
             document.title = code.main.structure[0].title;
             const contentDiv = document.getElementById("content");
@@ -65,7 +64,6 @@
             function createElement(elementData) {
                 let element = document.createElement(elementData.type);
 
-                // Set element attributes
                 if (elementData.class) element.classList.add(elementData.class);
                 if (elementData.id) element.id = elementData.id;
                 if (elementData.text) element.textContent = elementData.text;
@@ -83,17 +81,14 @@
                 return element;
             }
 
-            // Parse body content and append to DOM
             code.body.forEach(elementData => {
                 const newElement = createElement(elementData);
                 contentDiv.appendChild(newElement);
             });
         }
 
-        // Parse and render the BerZek code
         parseBerZek(berzekCode);
 
-        // JavaScript for the timer and scoring logic
         let timeRemaining = 30;
         let score = 0;
         const timerElement = document.getElementById('timer');

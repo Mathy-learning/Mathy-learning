@@ -11,11 +11,11 @@
     <div id="content"></div>
 
     <script>
-        // Define the BerZek format
+        // BerZek Code
         const berzekCode = {
             "main": {
                 "structure": [
-                    { "title": "Mathy+-= | 1's" }
+                    { "title": "Mathy+-= | 5's" }
                 ]
             },
             "body": [
@@ -47,9 +47,9 @@
                             "type": "fieldset",
                             "children": [
                                 { "type": "legend", "text": "Answer:" },
-                                { "type": "label", "for": `4-${i + 1}`, "text": "Type Answer: " },
-                                { "type": "input", "inputType": "text", "id": `4-${i + 1}`, "name": `4-${i + 1}`, "placeholder": "Locked" },
-                                { "type": "span", "id": `feedback-4-${i + 1}`, "class": "feedback" }
+                                { "type": "label", "for": `5-${i + 1}`, "text": "Type Answer: " },
+                                { "type": "input", "inputType": "text", "id": `5-${i + 1}`, "name": `5-${i + 1}`, "placeholder": "Locked" },
+                                { "type": "span", "id": `feedback-5-${i + 1}`, "class": "feedback" }
                             ]
                         }))
                     ]
@@ -57,7 +57,6 @@
             ]
         };
 
-        // Function to parse and render BerZek code
         function parseBerZek(code) {
             document.title = code.main.structure[0].title;
             const contentDiv = document.getElementById("content");
@@ -65,7 +64,6 @@
             function createElement(elementData) {
                 let element = document.createElement(elementData.type);
 
-                // Set element attributes
                 if (elementData.class) element.classList.add(elementData.class);
                 if (elementData.id) element.id = elementData.id;
                 if (elementData.text) element.textContent = elementData.text;
@@ -83,17 +81,14 @@
                 return element;
             }
 
-            // Parse body content and append to DOM
             code.body.forEach(elementData => {
                 const newElement = createElement(elementData);
                 contentDiv.appendChild(newElement);
             });
         }
 
-        // Parse and render the BerZek code
         parseBerZek(berzekCode);
 
-        // JavaScript for the timer and scoring logic
         let timeRemaining = 60;
         let score = 0;
         const timerElement = document.getElementById('timer');
@@ -104,13 +99,13 @@
         let countdown;
 
         const correctAnswers = {
-            "5-1": "5", "5-2": "8", "4-3": "12", "4-4": "16", "4-5": "20",
-            "4-6": "24", "4-7": "28", "4-8": "32", "4-9": "36", "4-10": "30"
+            "5-1": "5", "5-2": "10", "5-3": "15", "5-4": "20", "5-5": "25",
+            "5-6": "30", "5-7": "35", "5-8": "40", "5-9": "45", "5-10": "50"
         };
 
         const equations = {
-            "4-1": "4 * 1", "4-2": "4 * 2", "4-3": "4 * 3", "4-4": "4 * 4", "4-5": "4 * 5",
-            "4-6": "4 * 6", "4-7": "4 * 7", "4-8": "4 * 8", "4-9": "4 * 9", "4-10": "4 * 10"
+            "5-1": "5 * 1", "5-2": "5 * 2", "5-3": "5 * 3", "5-4": "5 * 4", "5-5": "5 * 5",
+            "5-6": "5 * 6", "5-7": "5 * 7", "5-8": "5 * 8", "5-9": "5 * 9", "5-10": "5 * 10"
         };
 
         function disableInputs(disabled) {
@@ -169,7 +164,7 @@
                 scoreFeedbackElement.textContent = "A Little Practice Needed";
                 scoreFeedbackElement.style.color = "blue";
             } else {
-                scoreFeedbackElement.textContent = "Your 4's for Multiplication Are Mastered!";
+                scoreFeedbackElement.textContent = "Your 5's for Multiplication Are Mastered!";
                 scoreFeedbackElement.style.color = "green";
             }
         }

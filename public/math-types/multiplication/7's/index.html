@@ -3,194 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathy+-= | 7's</title>
+    <title>Mathy+-= | 1's</title>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="icon" href="/assets/favicon/favicon.png">
 </head>
 <body>
-    
-    <div class="abt">
-        <h1>7's Excercises</h1>
-    <p>Try to answer as many of these multiplication questions correctly as possible in 1 minute!</p>
-    <a href="/math-types/multiplication">Want To Go Back?</a>
-    </div>
-
-    <div id="score">Score: 0</div>
-    <div id="score-feedback"></div>
-    <div id="timer">Time Remaining: 60 Seconds</div>
-    
-    <div class="excercises">
-        <fieldset>
-            <legend>Start:</legend>
-            <label for="start-button">Begin Test Now:</label>
-            <button id="start-button">Begin Test Now</button>
-        </fieldset>
-
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-1">Type Answer:</label>
-            <input type="text" id="7-1" name="7-1" placeholder="Locked">
-            <span id="feedback-7-1" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-2">Type Answer:</label>
-            <input type="text" id="7-2" name="7-2" placeholder="Locked">
-            <span id="feedback-7-2" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-3">Type Answer:</label>
-            <input type="text" id="7-3" name="7-3" placeholder="Locked">
-            <span id="feedback-7-3" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-4">Type Answer:</label>
-            <input type="text" id="7-4" name="7-4" placeholder="Locked">
-            <span id="feedback-7-4" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-5">Type Answer:</label>
-            <input type="text" id="7-5" name="7-5" placeholder="Locked">
-            <span id="feedback-7-5" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-6">Type Answer:</label>
-            <input type="text" id="7-6" name="7-6" placeholder="Locked">
-            <span id="feedback-7-6" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-7">Type Answer:</label>
-            <input type="text" id="7-7" name="7-7" placeholder="Locked">
-            <span id="feedback-7-7" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-8">Type Answer:</label>
-            <input type="text" id="7-8" name="7-8" placeholder="Locked">
-            <span id="feedback-7-8" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-9">Type Answer:</label>
-            <input type="text" id="7-9" name="7-9" placeholder="Locked">
-            <span id="feedback-7-9" class="feedback"></span>
-        </fieldset>
-        <fieldset>
-            <legend>Answer:</legend>
-            <label for="7-10">Type Answer:</label>
-            <input type="text" id="7-10" name="7-10" placeholder="Locked">
-            <span id="feedback-7-10" class="feedback"></span>
-        </fieldset>
-    </div>
+    <div id="content"></div>
 
     <script>
-        // Timer setup
-        let timeRemaining = 60; // Countdown time
+        // BerZek Code
+        const berzekCode = {
+            "main": {
+                "structure": [
+                    { "title": "Mathy+-= | 1's" }
+                ]
+            },
+            "body": [
+                {
+                    "type": "div",
+                    "class": "abt",
+                    "children": [
+                        { "type": "h1", "text": "4's Exercises" },
+                        { "type": "p", "text": "Try to answer as many of these multiplication questions correctly as possible in 1 minute!" },
+                        { "type": "a", "href": "/math-types/multiplication", "text": "Want To Go Back?" }
+                    ]
+                },
+                { "type": "div", "id": "score", "text": "Score: 0" },
+                { "type": "div", "id": "score-feedback", "text": "" },
+                { "type": "div", "id": "timer", "text": "Time Remaining: 60 Seconds" },
+                {
+                    "type": "div",
+                    "class": "exercises",
+                    "children": [
+                        {
+                            "type": "fieldset",
+                            "children": [
+                                { "type": "legend", "text": "Start:" },
+                                { "type": "label", "for": "start-button", "text": "Begin Test Now: " },
+                                { "type": "button", "id": "start-button", "text": "Begin Test Now" }
+                            ]
+                        },
+                        ...Array.from({ length: 10 }, (_, i) => ({
+                            "type": "fieldset",
+                            "children": [
+                                { "type": "legend", "text": "Answer:" },
+                                { "type": "label", "for": `5-${i + 1}`, "text": "Type Answer: " },
+                                { "type": "input", "inputType": "text", "id": `5-${i + 1}`, "name": `5-${i + 1}`, "placeholder": "Locked" },
+                                { "type": "span", "id": `feedback-5-${i + 1}`, "class": "feedback" }
+                            ]
+                        }))
+                    ]
+                }
+            ]
+        };
+
+        function parseBerZek(code) {
+            document.title = code.main.structure[0].title;
+            const contentDiv = document.getElementById("content");
+
+            function createElement(elementData) {
+                let element = document.createElement(elementData.type);
+
+                if (elementData.class) element.classList.add(elementData.class);
+                if (elementData.id) element.id = elementData.id;
+                if (elementData.text) element.textContent = elementData.text;
+                if (elementData.href) element.href = elementData.href;
+                if (elementData.placeholder) element.placeholder = elementData.placeholder;
+                if (elementData.inputType) element.type = elementData.inputType;
+                if (elementData.for) element.setAttribute("for", elementData.for);
+
+                if (elementData.children) {
+                    elementData.children.forEach(childData => {
+                        const childElement = createElement(childData);
+                        element.appendChild(childElement);
+                    });
+                }
+                return element;
+            }
+
+            code.body.forEach(elementData => {
+                const newElement = createElement(elementData);
+                contentDiv.appendChild(newElement);
+            });
+        }
+
+        parseBerZek(berzekCode);
+
+        let timeRemaining = 60;
+        let score = 0;
         const timerElement = document.getElementById('timer');
         const scoreElement = document.getElementById('score');
         const scoreFeedbackElement = document.getElementById('score-feedback');
         const inputFields = document.querySelectorAll('input[type="text"]');
         const startButton = document.getElementById('start-button');
         let countdown;
-        let score = 0; // Score
 
-        // Answers for questions
         const correctAnswers = {
-            "7-1": "7",
-            "7-2": "14",
-            "7-3": "21",
-            "7-4": "28",
-            "7-5": "35",
-            "7-6": "42",
-            "7-7": "49",
-            "7-8": "56",
-            "7-9": "63",
-            "7-10": "70"
+            "7-1": "7", "7-2": "14", "7-3": "21", "7-4": "28", "7-5": "35",
+            "7-6": "42", "7-7": "49", "7-8": "56", "7-9": "63", "7-10": "70"
         };
 
-        // Equations for when the countdown starts
         const equations = {
-            "7-1": "7 * 1",
-            "7-2": "7 * 2",
-            "7-3": "7 * 3",
-            "7-4": "7 * 4",
-            "7-5": "7 * 5",
-            "7-6": "7 * 6",
-            "7-7": "7 * 7",
-            "7-8": "7 * 8",
-            "7-9": "7 * 9",
-            "7-10": "7 * 10"
+            "7-1": "7 * 1", "7-2": "7 * 2", "7-3": "7 * 3", "7-4": "7 * 4", "7-5": "7 * 5",
+            "7-6": "7 * 6", "7-7": "7 * 7", "7-8": "7 * 8", "7-9": "7 * 9", "7-10": "7 * 10"
         };
 
-        // Disable all input fields when the countdown is not in action
         function disableInputs(disabled) {
             inputFields.forEach(input => {
-                if (disabled) {
-                    input.disabled = true;
-                    input.placeholder = "Locked";
-                } else {
-                    input.disabled = false;
-                    input.placeholder = equations[input.id];  // Show the equation when enabled
-                }
+                input.disabled = disabled;
+                input.placeholder = disabled ? "Locked" : equations[input.id];
             });
         }
 
-        // Store the equations
-        inputFields.forEach(input => {
-            input.setAttribute("data-original-placeholder", equations[input.id]);
-        });
-
-        // Disable all input fields initially and set placeholders to "Locked"
         disableInputs(true);
 
-        // Event listener for the Start button
         startButton.addEventListener('click', () => {
             startButton.disabled = true;
-            disableInputs(false); // Enable the input fields and show equations when the countdown is in action
+            disableInputs(false);
             startCountdown();
         });
 
-        // Countdown
         function startCountdown() {
             countdown = setInterval(() => {
                 timeRemaining--;
-                timerElement.textContent = `Time Remaining: ${timeRemaining}`;
+                timerElement.textContent = `Time Remaining: ${timeRemaining} Seconds`;
 
                 if (timeRemaining <= 0) {
                     clearInterval(countdown);
-                    disableInputs(true); // Disable input fields when time runs out
+                    disableInputs(true);
                     timerElement.textContent = 'Time is up!';
-                    checkAnswers(); // Check answers once the countdown is over
+                    checkAnswers();
                 }
             }, 1000);
         }
 
-        // Function to check all answers after time runs out
         function checkAnswers() {
             inputFields.forEach(input => {
                 const inputId = input.id;
                 const value = input.value;
                 const feedbackElement = document.getElementById(`feedback-${inputId}`);
-                
+
                 if (value === correctAnswers[inputId]) {
                     feedbackElement.textContent = "Correct";
                     feedbackElement.style.color = "green";
-                    score += 10.00;
+                    score += 10;
                 } else {
                     feedbackElement.textContent = "Incorrect";
                     feedbackElement.style.color = "red";
                 }
             });
-            
-            // Update the score
-            scoreElement.textContent = `Score: ${score.toFixed(2)}`;  // Show score
-            
-            // Provide feedback based on the score range
+
+            scoreElement.textContent = `Score: ${score}`;
             if (score <= 25) {
                 scoreFeedbackElement.textContent = "Lots Of Practice Needed";
                 scoreFeedbackElement.style.color = "red";
@@ -200,13 +163,11 @@
             } else if (score <= 75) {
                 scoreFeedbackElement.textContent = "A Little Practice Needed";
                 scoreFeedbackElement.style.color = "blue";
-
-            } else
+            } else {
                 scoreFeedbackElement.textContent = "Your 7's for Multiplication Are Mastered!";
                 scoreFeedbackElement.style.color = "green";
             }
-
+        }
     </script>
-
 </body>
 </html>
