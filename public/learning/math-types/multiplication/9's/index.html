@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathy+-= | 1's</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" href="/assets/favicon/favicon.png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3515868780738573"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    <div class="abt">
+        <h1>9's Excercises</h1>
+        <p>Try to answer as many of these multiplication questions correctly as possible in 1 minute!</p>
+        <a href="/math-types/multiplication">Want To Go Back?</a>
+        </div>
+    
+        <div id="score">Score: 0</div>
+        <div id="score-feedback"></div>
+        <div id="timer">Time Remaining: 60 Seconds</div>
+        
+        <div class="excercises">
+            <fieldset>
+                <legend>Start:</legend>
+                <label for="start-button">Begin Test Now:</label>
+                <button id="start-button">Begin Test Now</button>
+            </fieldset>
+    
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-1">Type Answer:</label>
+                <input type="text" id="9-1" name="9-1" placeholder="Locked">
+                <span id="feedback-9-1" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-2">Type Answer:</label>
+                <input type="text" id="9-2" name="9-2" placeholder="Locked">
+                <span id="feedback-9-2" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-3">Type Answer:</label>
+                <input type="text" id="9-3" name="9-3" placeholder="Locked">
+                <span id="feedback-9-3" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-4">Type Answer:</label>
+                <input type="text" id="9-4" name="9-4" placeholder="Locked">
+                <span id="feedback-9-4" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-5">Type Answer:</label>
+                <input type="text" id="9-5" name="9-5" placeholder="Locked">
+                <span id="feedback-9-5" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-6">Type Answer:</label>
+                <input type="text" id="9-6" name="9-6" placeholder="Locked">
+                <span id="feedback-9-6" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-7">Type Answer:</label>
+                <input type="text" id="9-7" name="9-7" placeholder="Locked">
+                <span id="feedback-9-7" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-8">Type Answer:</label>
+                <input type="text" id="9-8" name="9-8" placeholder="Locked">
+                <span id="feedback-9-8" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-9">Type Answer:</label>
+                <input type="text" id="9-9" name="9-9" placeholder="Locked">
+                <span id="feedback-9-9" class="feedback"></span>
+            </fieldset>
+            <fieldset>
+                <legend>Answer:</legend>
+                <label for="9-10">Type Answer:</label>
+                <input type="text" id="9-10" name="9-10" placeholder="Locked">
+                <span id="feedback-9-10" class="feedback"></span>
+            </fieldset>
+        </div>
+    
+        <script>
+            // Timer setup
+            let timeRemaining = 60; // Countdown time
+            const timerElement = document.getElementById('timer');
+            const scoreElement = document.getElementById('score');
+            const scoreFeedbackElement = document.getElementById('score-feedback');
+            const inputFields = document.querySelectorAll('input[type="text"]');
+            const startButton = document.getElementById('start-button');
+            let countdown;
+            let score = 0; // Score
+    
+            // Answers for questions
+            const correctAnswers = {
+                "9-1": "9",
+                "9-2": "18",
+                "9-3": "27",
+                "7-4": "36",
+                "9-5": "45",
+                "9-6": "54",
+                "9-7": "63",
+                "9-8": "72",
+                "9-9": "81",
+                "9-10": "90"
+            };
+    
+            // Equations for when the countdown starts
+            const equations = {
+                "9-1": "9 * 1",
+                "9-2": "9 * 2",
+                "9-3": "9 * 3",
+                "7-4": "9 * 4",
+                "9-5": "9 * 5",
+                "9-6": "9 * 6",
+                "9-7": "9 * 7",
+                "9-8": "9 * 8",
+                "9-9": "9 * 9",
+                "9-10": "9 * 10"
+            };
+    
+            // Disable all input fields when the countdown is not in action
+            function disableInputs(disabled) {
+                inputFields.forEach(input => {
+                    if (disabled) {
+                        input.disabled = true;
+                        input.placeholder = "Locked";
+                    } else {
+                        input.disabled = false;
+                        input.placeholder = equations[input.id];  // Show the equation when enabled
+                    }
+                });
+            }
+    
+            // Store the equations
+            inputFields.forEach(input => {
+                input.setAttribute("data-original-placeholder", equations[input.id]);
+            });
+    
+            // Disable all input fields initially and set placeholders to "Locked"
+            disableInputs(true);
+    
+            // Event listener for the Start button
+            startButton.addEventListener('click', () => {
+                startButton.disabled = true;
+                disableInputs(false); // Enable the input fields and show equations when the countdown is in action
+                startCountdown();
+            });
+    
+            // Countdown
+            function startCountdown() {
+                countdown = setInterval(() => {
+                    timeRemaining--;
+                    timerElement.textContent = `Time Remaining: ${timeRemaining}`;
+    
+                    if (timeRemaining <= 0) {
+                        clearInterval(countdown);
+                        disableInputs(true); // Disable input fields when time runs out
+                        timerElement.textContent = 'Time is up!';
+                        checkAnswers(); // Check answers once the countdown is over
+                    }
+                }, 1000);
+            }
+    
+            // Function to check all answers after time runs out
+            function checkAnswers() {
+                inputFields.forEach(input => {
+                    const inputId = input.id;
+                    const value = input.value;
+                    const feedbackElement = document.getElementById(`feedback-${inputId}`);
+                    
+                    if (value === correctAnswers[inputId]) {
+                        feedbackElement.textContent = "Correct";
+                        feedbackElement.style.color = "green";
+                        score += 10.00;
+                    } else {
+                        feedbackElement.textContent = "Incorrect";
+                        feedbackElement.style.color = "red";
+                    }
+                });
+                
+                // Update the score
+                scoreElement.textContent = `Score: ${score.toFixed(2)}`;  // Show score
+                
+                // Provide feedback based on the score range
+                if (score <= 25) {
+                    scoreFeedbackElement.textContent = "Lots Of Practice Needed";
+                    scoreFeedbackElement.style.color = "red";
+                } else if (score <= 50) {
+                    scoreFeedbackElement.textContent = "Practice Needed";
+                    scoreFeedbackElement.style.color = "orange";
+                } else if (score <= 75) {
+                    scoreFeedbackElement.textContent = "A Little Practice Needed";
+                    scoreFeedbackElement.style.color = "blue";
+    
+                } else
+                    scoreFeedbackElement.textContent = "Your 9's for Multiplication Are Mastered!";
+                    scoreFeedbackElement.style.color = "green";
+                }
+    
+        </script>  
+
+</body>
+</html>
